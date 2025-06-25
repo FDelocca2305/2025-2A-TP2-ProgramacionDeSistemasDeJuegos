@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CharacterSpawner : MonoBehaviour, ISetup<ICharacterFactory>
+public class CharacterSpawner : MonoBehaviour
 {
     private ICharacterFactory _factory;
     
@@ -13,7 +13,7 @@ public class CharacterSpawner : MonoBehaviour, ISetup<ICharacterFactory>
     {
         if (_factory == null)
         {
-            Debug.LogError("CharacterSpawner: Factory not set!");
+            Debug.LogError("CharacterSpawner: No Factory Set");
             return;
         }
         _factory.CreateCharacter(config, transform.position, transform.rotation);
