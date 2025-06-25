@@ -1,26 +1,21 @@
 using UnityEngine;
 
-public class CharacterSpawner : MonoBehaviour
+public class CharacterSpawner : MonoBehaviour, ISetupSpawner
 {
-    [SerializeField] private Character prefab;
-    [SerializeField] private CharacterModel characterModel;
-    [SerializeField] private PlayerControllerModel controllerModel;
-    [SerializeField] private RuntimeAnimatorController animatorController;
-
-    public void Spawn()
+    private ICharacterFactory _factory;
+    
+    public void Setup(ICharacterFactory factory)
     {
-        var result = Instantiate(prefab, transform.position, transform.rotation);
-        if (!result.TryGetComponent(out Character character))
-            character = result.gameObject.AddComponent<Character>();
-        character.Setup(characterModel);
+        _factory = factory;
+    }
 
-        if (!result.TryGetComponent(out PlayerController controller))
-            controller = result.gameObject.AddComponent<PlayerController>();
-        controller.Setup(controllerModel);
-
-        var animator = result.GetComponentInChildren<Animator>();
-        if (!animator)
-            animator = result.gameObject.AddComponent<Animator>();
-        animator.runtimeAnimatorController = animatorController;
+    public void Spawn(CharacterConfig config)
+    {
+        if (_factory == null)
+        {
+            Debug.LogError("CharacterSpawner: Factory not set!");
+            return;
+        }
+        _factory.CreateCharacter(config, transform.position, transform.rotation);
     }
 }
