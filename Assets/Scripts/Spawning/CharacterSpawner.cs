@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CharacterSpawner : MonoBehaviour, ISetupSpawner
+public class CharacterSpawner : MonoBehaviour, ISetup<ICharacterFactory>
 {
     private ICharacterFactory _factory;
     

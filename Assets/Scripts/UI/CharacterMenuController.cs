@@ -9,7 +9,7 @@ public class CharacterMenuController : MonoBehaviour
     private void Start()
     {
         _spawner = FindFirstObjectByType<CharacterSpawner>();
-        _spawner.Setup(new SOCharacterFactory());
+        _spawner.Setup(new CharacterFactory());
 
         menuBuilder.BuildMenu(
             menuConfig.buttons,
