@@ -1,8 +1,13 @@
 using UnityEngine;
 
-public class CharacterSpawner : MonoBehaviour
+public class CharacterSpawner : MonoBehaviour, ICharacterSpawner
 {
     private ICharacterFactory _factory;
+    
+    private void Awake()
+    {
+        ServiceLocator.Register<ICharacterSpawner>(this);
+    }
     
     public void Setup(ICharacterFactory factory)
     {

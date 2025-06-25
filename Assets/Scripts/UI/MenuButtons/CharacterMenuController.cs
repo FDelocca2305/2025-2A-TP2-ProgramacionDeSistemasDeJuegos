@@ -4,12 +4,12 @@ public class CharacterMenuController : MonoBehaviour
 {
     [SerializeField] private CharacterMenuBuilder menuBuilder;
     [SerializeField] private ButtonMenuConfig menuConfig;
-    private CharacterSpawner _spawner;
+    private ICharacterSpawner _spawner;
 
     private void Start()
     {
-        _spawner = FindFirstObjectByType<CharacterSpawner>();
-        _spawner.Setup(new CharacterFactory());
+        _spawner = ServiceLocator.Get<ICharacterSpawner>();
+        _spawner.Setup(ServiceLocator.Get<ICharacterFactory>());
 
         menuBuilder.BuildMenu(
             menuConfig.buttons,
