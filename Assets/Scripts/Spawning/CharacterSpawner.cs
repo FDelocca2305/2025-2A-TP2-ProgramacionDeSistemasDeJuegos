@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class CharacterSpawner : MonoBehaviour, ICharacterSpawner
@@ -8,7 +9,12 @@ public class CharacterSpawner : MonoBehaviour, ICharacterSpawner
     {
         ServiceLocator.Register<ICharacterSpawner>(this);
     }
-    
+
+    private void OnDestroy()
+    {
+        ServiceLocator.Unregister<ICharacterSpawner>();
+    }
+
     public void Setup(ICharacterFactory factory)
     {
         _factory = factory;

@@ -66,9 +66,6 @@ public class CharacterAnimator : MonoBehaviour
                 case AnimatorControllerParameterType.Float:
                     animator.SetFloat(param.name, param.floatValue);
                     break;
-                case AnimatorControllerParameterType.Int:
-                    animator.SetInteger(param.name, param.intValue);
-                    break;
                 case AnimatorControllerParameterType.Trigger:
                     animator.SetTrigger(param.name);
                     break;

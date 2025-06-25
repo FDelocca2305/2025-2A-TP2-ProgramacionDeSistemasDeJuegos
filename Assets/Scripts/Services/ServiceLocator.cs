@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 public static class ServiceLocator
 {
@@ -9,10 +8,7 @@ public static class ServiceLocator
     public static void Register<T>(T service)
     {
         var type = typeof(T);
-        if (_services.ContainsKey(type))
-            _services[type] = service;
-        else
-            _services.Add(type, service);
+        _services[type] = service;
     }
 
     public static void Unregister<T>()
@@ -27,7 +23,7 @@ public static class ServiceLocator
         var type = typeof(T);
         if (_services.TryGetValue(type, out var service))
             return (T)service;
-        throw new Exception($"Service {type.Name} not registered in ServiceLocator!");
+        throw new Exception($"Service {type.Name} not registered in ServiceLocator");
     }
 
     public static bool TryGet<T>(out T service)
@@ -40,10 +36,5 @@ public static class ServiceLocator
         }
         service = default;
         return false;
-    }
-
-    public static void Clear()
-    {
-        _services.Clear();
     }
 }

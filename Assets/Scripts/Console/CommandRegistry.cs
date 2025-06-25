@@ -16,11 +16,4 @@ public class CommandRegistry
         => _commands.TryGetValue(name, out command);
 
     public IEnumerable<IConsoleCommand> GetAll() => new HashSet<IConsoleCommand>(_commands.Values);
-    
-    public IEnumerable<string> GetAliasesFor(string commandName)
-    {
-        if (TryGet(commandName, out var cmd))
-            return cmd.Aliases;
-        return Array.Empty<string>();
-    }
 }

@@ -7,7 +7,8 @@ public class ConsoleService : IConsoleService, ILogHandler
 {
     private readonly CommandRegistry _registry = new();
     private readonly Queue<string> _history = new();
-    private ILogHandler _unityLogHandler;
+    private readonly ILogHandler _unityLogHandler;
+    
     public IEnumerable<IConsoleCommand> Commands => _registry.GetAll();
     
     public ConsoleService()

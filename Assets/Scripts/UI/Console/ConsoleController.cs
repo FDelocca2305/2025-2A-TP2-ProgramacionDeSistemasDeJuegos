@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class ConsoleController : MonoBehaviour, IConsoleUI
@@ -8,11 +10,11 @@ public class ConsoleController : MonoBehaviour, IConsoleUI
     [SerializeField] private GameObject consolePanel;
     [SerializeField] private Button toggleButton;
     [SerializeField] private Button closeButton;
-    [SerializeField] private KeyCode toggleKey = KeyCode.F1;
     [SerializeField] private TMP_Text outputText;
     [SerializeField] private TMP_InputField inputField;
     [SerializeField] private Button sendButton;
     [SerializeField] private ScrollRect scrollRect;
+    [SerializeField] private InputActionReference toggleConsoleAction;
     
     private IConsoleService _consoleService;
     
@@ -32,10 +34,32 @@ public class ConsoleController : MonoBehaviour, IConsoleUI
         _consoleService = ServiceLocator.Get<IConsoleService>();
     }
 
-    private void Update()
+    private void OnDestroy()
     {
-        if (Input.GetKeyDown(toggleKey))
-            ToggleConsole();
+        ServiceLocator.Unregister<IConsoleUI>();
+    }
+
+    private void OnEnable()
+    {
+        if (toggleConsoleAction != null)
+        {
+            toggleConsoleAction.action.Enable();
+            toggleConsoleAction.action.performed += OnToggleConsoleAction;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (toggleConsoleAction != null)
+        {
+            toggleConsoleAction.action.performed -= OnToggleConsoleAction;
+            toggleConsoleAction.action.Disable();
+        }
+    }
+
+    private void OnToggleConsoleAction(InputAction.CallbackContext ctx)
+    {
+        ToggleConsole();
     }
     
     private void OnInputSubmit(string command)
@@ -67,13 +91,7 @@ public class ConsoleController : MonoBehaviour, IConsoleUI
 
         _consoleService.RunCommand(commandText);
     }
-    
-    public void ClearInput()
-    {
-        if (inputField != null)
-            inputField.text = "";
-    }
-    
+
     public void UpdateLog(Queue<string> history)
     {
         outputText.text = string.Join("\n", history);

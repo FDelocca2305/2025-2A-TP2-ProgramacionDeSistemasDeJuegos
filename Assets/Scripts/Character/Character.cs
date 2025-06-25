@@ -11,7 +11,6 @@ public class Character : MonoBehaviour, ISetup<CharacterModel>
     public Vector2 Velocity => _rigidbody?.linearVelocity ?? Vector2.zero;
     private void Awake()
         => _rigidbody = GetComponent<Rigidbody2D>();
-
     
     public void Setup(CharacterModel model)
         => Model = model;

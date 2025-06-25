@@ -2,6 +2,5 @@
 
 public interface IConsoleUI
 {
-    void UpdateLog(Queue<string> _history);
-    void ClearInput();
+    void UpdateLog(Queue<string> history);
 }

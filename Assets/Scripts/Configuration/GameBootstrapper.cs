@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class GameBootstrapper : MonoBehaviour
@@ -15,5 +16,12 @@ public class GameBootstrapper : MonoBehaviour
         console.RegisterCommand(new HelpCommand(console));
         console.RegisterCommand(new AliassesCommand(console));
         console.RegisterCommand(new PlayAnimationCommand(console, library));
+    }
+
+    private void OnDestroy()
+    {
+        ServiceLocator.Unregister<ICharacterFactory>();
+        ServiceLocator.Unregister<IConsoleService>();
+        ServiceLocator.Unregister<ILogHandler>();
     }
 }
