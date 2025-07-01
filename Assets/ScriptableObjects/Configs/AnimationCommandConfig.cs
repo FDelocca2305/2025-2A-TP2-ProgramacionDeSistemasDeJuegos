@@ -15,4 +15,9 @@ public class AnimationCommandConfig : ScriptableObject
         public float floatValue;
         public bool boolValue;
     }
+    
+    public override string ToString()
+    {
+        return animatorStateName;
+    }
 }

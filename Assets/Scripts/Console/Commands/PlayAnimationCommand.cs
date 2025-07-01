@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Text;
 
 public class PlayAnimationCommand : IConsoleCommand
 {
@@ -7,7 +8,22 @@ public class PlayAnimationCommand : IConsoleCommand
     
     public string Name => "playanimation";
     public string[] Aliases => new[] { "anim", "playanim" };
-    public string Description => "playanimation <animation>: Play an animation in all the characters.";
+    public string Description
+    {
+        get { return $"playanimation <animation>: Play an animation in all the characters. Available Animations: {GetAvailableAnimations()}"; }
+    }
+
+    private string GetAvailableAnimations()
+    {
+        StringBuilder availableAnimations = new StringBuilder();
+        availableAnimations.Append("\n");
+        foreach (var a in _library.animations)
+        {
+            availableAnimations.Append($"- {a.ToString()}");
+            availableAnimations.Append("\n");
+        }
+        return availableAnimations.ToString();
+    }
 
     public PlayAnimationCommand(IConsoleService console, AnimationCommandLibrary  library)
     {
@@ -20,8 +36,7 @@ public class PlayAnimationCommand : IConsoleCommand
         if (args.Length == 0)
         {
             _console.Write("Use: playanimation <animation>. Available Animations:");
-            foreach (var a in _library.animations)
-                _console.Write($"- {a}");
+            _console.Write(GetAvailableAnimations());
             return;
         }
 
