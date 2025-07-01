@@ -9,7 +9,6 @@ public class CharacterMenuController : MonoBehaviour
     private void Start()
     {
         _spawner = ServiceLocator.Get<ICharacterSpawner>();
-        _spawner.Setup(ServiceLocator.Get<ICharacterFactory>());
 
         menuBuilder.BuildMenu(
             menuConfig.buttons,

@@ -1,9 +1,8 @@
-using System;
 using UnityEngine;
 
 public class CharacterSpawner : MonoBehaviour, ICharacterSpawner
 {
-    private ICharacterFactory _factory;
+    private ICharacterAbstractFactory _factory;
     
     private void Awake()
     {
@@ -15,18 +14,15 @@ public class CharacterSpawner : MonoBehaviour, ICharacterSpawner
         ServiceLocator.Unregister<ICharacterSpawner>();
     }
 
-    public void Setup(ICharacterFactory factory)
+    public void Setup(ICharacterAbstractFactory factory)
     {
         _factory = factory;
     }
-
+    
     public void Spawn(CharacterConfig config)
     {
-        if (_factory == null)
-        {
-            Debug.LogError("CharacterSpawner: No Factory Set");
-            return;
-        }
-        _factory.CreateCharacter(config, transform.position, transform.rotation);
+        var abstractFactory = ServiceLocator.Get<ICharacterAbstractFactory>();
+        var factory = abstractFactory.GetFactory(config);
+        factory.CreateCharacter(config, transform.position, transform.rotation);
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using UnityEngine;
 
 public class PlayAnimationCommand : IConsoleCommand
 {
@@ -35,8 +34,7 @@ public class PlayAnimationCommand : IConsoleCommand
             return;
         }
 
-        var animators = Object.FindObjectsByType<CharacterAnimator>(FindObjectsSortMode.None);
-        foreach (var charAnim in animators)
+        foreach (var charAnim in CharacterAnimator.Instances)
         {
             charAnim.ForceAnimation(animCommand, 2f);
         }

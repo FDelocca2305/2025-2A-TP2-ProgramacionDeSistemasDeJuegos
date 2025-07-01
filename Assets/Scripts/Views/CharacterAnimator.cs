@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterAnimator : MonoBehaviour
@@ -9,7 +11,11 @@ public class CharacterAnimator : MonoBehaviour
     [SerializeField] private string isJumpingParameter = "IsJumping";
     [SerializeField] private string isFallingParameter = "IsFalling";
     
-    private float _overrideTimer = 0f;
+    private static readonly List<CharacterAnimator> _instances = new();
+    private Coroutine _overrideCoroutine;
+    private bool _isOverriding = false;
+    
+    public static IReadOnlyList<CharacterAnimator> Instances => _instances;
     
     private void Reset()
     {
@@ -30,6 +36,9 @@ public class CharacterAnimator : MonoBehaviour
 
     private void OnEnable()
     {
+        if (!_instances.Contains(this))
+            _instances.Add(this);
+        
         if (!character || !animator || !spriteRenderer)
         {
             Debug.LogError($"{name} <color=grey>({GetType().Name})</color>: At least one reference is null!");
@@ -39,11 +48,8 @@ public class CharacterAnimator : MonoBehaviour
 
     private void Update()
     {
-        if (_overrideTimer > 0)
-        {
-            _overrideTimer -= Time.deltaTime;
+        if (_isOverriding)
             return;
-        }
         
         var speed = character.Velocity;
         animator.SetFloat(speedParameter, Mathf.Abs(speed.x));
@@ -52,10 +58,21 @@ public class CharacterAnimator : MonoBehaviour
         spriteRenderer.flipX = speed.x < 0;
     }
     
+    private void OnDisable()
+    {
+        _instances.Remove(this);
+    }
+    
     public void ForceAnimation(AnimationCommandConfig animConfig, float duration = 1f)
     {
-        _overrideTimer = duration;
-        var animator = this.animator;
+        if (_overrideCoroutine != null)
+            StopCoroutine(_overrideCoroutine);
+        _overrideCoroutine = StartCoroutine(ForceAnimationRoutine(animConfig, duration));
+    }
+
+    private IEnumerator ForceAnimationRoutine(AnimationCommandConfig animConfig, float duration)
+    {
+        _isOverriding = true;
         foreach (var param in animConfig.parameters)
         {
             switch (param.type)
@@ -72,5 +89,10 @@ public class CharacterAnimator : MonoBehaviour
             }
         }
         animator.Play(animConfig.animatorStateName);
+
+        yield return new WaitForSeconds(duration);
+
+        _isOverriding = false;
+        _overrideCoroutine = null;
     }
 }

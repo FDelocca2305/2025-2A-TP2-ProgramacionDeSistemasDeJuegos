@@ -1,5 +1,5 @@
 ﻿public interface ICharacterSpawner
 {
-    void Setup(ICharacterFactory factory);
+    void Setup(ICharacterAbstractFactory factory);
     void Spawn(CharacterConfig config);
 }

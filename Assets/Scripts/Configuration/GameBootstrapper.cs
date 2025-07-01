@@ -1,13 +1,21 @@
-using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameBootstrapper : MonoBehaviour
 {
-    [SerializeField] private AnimationCommandLibrary  library;
+    [SerializeField] private AnimationCommandLibrary library;
+    [SerializeField] private Button characterButtonPrefab;
     
     private void Awake()
     {
-        ServiceLocator.Register<ICharacterFactory>(new CharacterFactory());
+        var defaultFactory = new CharacterFactory();
+        var abstractFactory = new SimpleCharacterAbstractFactory(defaultFactory);
+        ServiceLocator.Register<ICharacterAbstractFactory>(abstractFactory);
+        
+        var buttonAbstractFactory = new MenuAbstractFactory();
+        var characterButtonFactory = new CharacterButtonFactory(characterButtonPrefab);
+        buttonAbstractFactory.RegisterFactory(characterButtonFactory);
+        ServiceLocator.Register<IMenuAbstractFactory>(buttonAbstractFactory);
         
         var console = new ConsoleService();
         ServiceLocator.Register<IConsoleService>(console);
@@ -20,7 +28,8 @@ public class GameBootstrapper : MonoBehaviour
 
     private void OnDestroy()
     {
-        ServiceLocator.Unregister<ICharacterFactory>();
+        ServiceLocator.Unregister<ICharacterAbstractFactory>();
+        ServiceLocator.Unregister<IMenuAbstractFactory>();
         ServiceLocator.Unregister<IConsoleService>();
         ServiceLocator.Unregister<ILogHandler>();
     }
