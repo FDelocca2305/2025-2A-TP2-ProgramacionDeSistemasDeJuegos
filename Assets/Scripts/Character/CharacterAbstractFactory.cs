@@ -1,7 +1,7 @@
-﻿public class SimpleCharacterAbstractFactory : ICharacterAbstractFactory
+﻿public class CharacterAbstractFactory : ICharacterAbstractFactory
 {
     private readonly ICharacterFactory _defaultFactory;
-    public SimpleCharacterAbstractFactory(ICharacterFactory defaultFactory) 
+    public CharacterAbstractFactory(ICharacterFactory defaultFactory) 
     {
         _defaultFactory = defaultFactory;
     }

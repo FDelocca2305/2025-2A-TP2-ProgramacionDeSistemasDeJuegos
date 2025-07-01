@@ -1,15 +1,15 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameBootstrapper : MonoBehaviour
+public class Startup : MonoBehaviour
 {
     [SerializeField] private AnimationCommandLibrary library;
     [SerializeField] private Button characterButtonPrefab;
     
     private void Awake()
     {
-        var defaultFactory = new CharacterFactory();
-        var abstractFactory = new SimpleCharacterAbstractFactory(defaultFactory);
+        var defaultFactory = new SimpleCharacterFactory();
+        var abstractFactory = new CharacterAbstractFactory(defaultFactory);
         ServiceLocator.Register<ICharacterAbstractFactory>(abstractFactory);
         
         var buttonAbstractFactory = new MenuAbstractFactory();

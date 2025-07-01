@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CharacterFactory : ICharacterFactory
+public class SimpleCharacterFactory : ICharacterFactory
 {
     public GameObject CreateCharacter(CharacterConfig config, Vector3 position, Quaternion rotation)
     {
