@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class CharacterSpawner : MonoBehaviour, ICharacterSpawner
 {
-    private ICharacterAbstractFactory _factory;
-    
     private void Awake()
     {
         ServiceLocator.Register<ICharacterSpawner>(this);
@@ -12,11 +10,6 @@ public class CharacterSpawner : MonoBehaviour, ICharacterSpawner
     private void OnDestroy()
     {
         ServiceLocator.Unregister<ICharacterSpawner>();
-    }
-
-    public void Setup(ICharacterAbstractFactory factory)
-    {
-        _factory = factory;
     }
     
     public void Spawn(CharacterConfig config)
