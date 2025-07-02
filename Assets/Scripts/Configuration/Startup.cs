@@ -12,10 +12,10 @@ public class Startup : MonoBehaviour
         var abstractFactory = new CharacterAbstractFactory(defaultFactory);
         ServiceLocator.Register<ICharacterAbstractFactory>(abstractFactory);
         
-        var buttonAbstractFactory = new MenuAbstractFactory();
+        var buttonAbstractFactory = new ButtonAbstractFactory();
         var characterButtonFactory = new CharacterButtonFactory(characterButtonPrefab);
         buttonAbstractFactory.RegisterFactory(characterButtonFactory);
-        ServiceLocator.Register<IMenuAbstractFactory>(buttonAbstractFactory);
+        ServiceLocator.Register<IButtonAbstractFactory>(buttonAbstractFactory);
         
         var console = new ConsoleService();
         ServiceLocator.Register<IConsoleService>(console);
@@ -29,7 +29,7 @@ public class Startup : MonoBehaviour
     private void OnDestroy()
     {
         ServiceLocator.Unregister<ICharacterAbstractFactory>();
-        ServiceLocator.Unregister<IMenuAbstractFactory>();
+        ServiceLocator.Unregister<IButtonAbstractFactory>();
         ServiceLocator.Unregister<IConsoleService>();
         ServiceLocator.Unregister<ILogHandler>();
     }

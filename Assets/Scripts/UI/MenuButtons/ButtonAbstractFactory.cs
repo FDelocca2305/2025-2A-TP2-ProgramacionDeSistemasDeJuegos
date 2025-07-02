@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class MenuAbstractFactory : IMenuAbstractFactory
+public class ButtonAbstractFactory : IButtonAbstractFactory
 {
     private readonly Dictionary<Type, object> _factories = new();
 

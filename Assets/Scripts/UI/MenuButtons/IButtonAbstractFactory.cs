@@ -1,4 +1,4 @@
-﻿public interface IMenuAbstractFactory
+﻿public interface IButtonAbstractFactory
 { 
     IButtonFactory<T> GetFactory<T>();
 }

@@ -3,16 +3,14 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class MenuBuilder<T> : MonoBehaviour
+public class MenuBuilder<T>
 {
-    [SerializeField] private Transform buttonLayout;
-
-    public void BuildMenu(IEnumerable<T> entries, Func<T, string> getTitle, Action<T> onClick)
+    public void BuildMenu(IEnumerable<T> entries, Transform buttonLayout, Func<T, string> getTitle, Action<T> onClick)
     {
         foreach (Transform child in buttonLayout)
-            Destroy(child.gameObject);
+            UnityEngine.Object.Destroy(child.gameObject);
 
-        var abstractFactory = ServiceLocator.Get<IMenuAbstractFactory>();
+        var abstractFactory = ServiceLocator.Get<IButtonAbstractFactory>();
         var factory = abstractFactory.GetFactory<T>();
         factory.Setup(buttonLayout);
 
